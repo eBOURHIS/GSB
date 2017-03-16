@@ -2,6 +2,7 @@
 
 session_start();
 
+require '../php/connectAD.php';
 require '../php/def.php';
 
 ?>
@@ -110,34 +111,34 @@ echo($formulaire);
 			
 	</p>
 <?php 	
-	$res = executeSQL("SELECT mois,annee,montantValide,idEtat FROM FicheFrais WHERE idEtat='CR'");
-	$ficheFraisListe = selectData($res);
+	$ficheFraisListe = tableSQL("SELECT mois,annee,montantValide,idEtat FROM FicheFrais WHERE idEtat='CR'");
 	
 	// print_r($ficheFraisListe);
 
-
-
-	for ($i = 0; $i < count($ficheFraisListe); $i++) {
 	echo '<table>';
+	for ($i = 0; $i < count($ficheFraisListe); $i++) {
 
+	echo '<tr>';
+			
 			foreach ($ficheFraisListe[$i] as $key => $value) { 
 
 				echo "<th>$key</th>";
+			}
+			echo '</tr>';
+			echo '<tr>';
+			foreach ($ficheFraisListe[$i] as $key => $value) {
+			
+
 				echo "<td>$value</td>";
-
-
-			// echo "<tr>";
-				// echo "<td>".$value."</td>";
-			// echo "</tr>";
-
 			}
 				echo '<td>	<input type= "radio" name="Valide" value="Valide" checked> Valide';
 				echo '		<input type= "radio" name="Non_Valide" value="Non_Valide" > Non Valide</td>';
-		
-	echo '</table>'; 
+	echo '</tr>';
+
 				
 
 	}
+	echo '</table>';
 		
 	 
 ?>

@@ -2,7 +2,8 @@
 
 session_start();
 
-require '../php/def.php'; 
+require '../php/def.php';
+require '../php/connectAD.php';
 
 function listInput($row) {
 	if (gettype($row) == 'array') {

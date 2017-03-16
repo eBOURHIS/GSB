@@ -3,7 +3,7 @@
 session_start();
 
 require 'php/def.php';
-require 'php/connectAD';
+require 'php/connectAD.php';
 
 if ($_SESSION['login']) { //Dans le cas où l'utilisateur est déjà connecter
 	header('location: connexion.php'); //redirection vers la page 'connexion.php'

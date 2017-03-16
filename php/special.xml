@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+    <admin>
+        <login>admin</login>
+        <pwd>admin</pwd>
+        <nom>DUPONT</nom>
+        <prenom>Thomas</prenom>
+    </admin>
+    <comptable>
+        <login>Comptable</login>
+        <pwd>Compta</pwd>
+        <nom>DUPONT</nom>
+        <prenom>Jean</prenom>
+    </comptable>
+</user>

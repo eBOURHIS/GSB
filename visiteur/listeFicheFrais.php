@@ -3,6 +3,7 @@
 session_start();
 
 require '../php/def.php';
+require '../php/connectAD.php';
 
 if ($_GET) {
 	$get = $_GET;

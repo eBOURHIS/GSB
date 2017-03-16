@@ -1,6 +1,7 @@
 <?php 
 
 require '../php/def.php';
+require '../php/connectAD.php';
 
 session_start();
 

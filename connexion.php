@@ -3,7 +3,7 @@
 session_start();
 
 require 'php/def.php';
-require 'php/connectAD';
+require 'php/connectAD.php';
 
 if ($_SESSION['login']) { //Si l'utilisateur est déjà connecté
 	$etat = "a réussi"; //Prévoir peut-être une autre variable ? 
