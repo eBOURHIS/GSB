@@ -1,0 +1,33 @@
+
+SetEnv TZ Europe/Paris
+ServerSignature Off
+
+AddDefaultCharset UTF-8
+
+Options All -Indexes
+Options +FollowSymLinks
+
+<Files /home/ubuntu/workspace/php/special.xml>
+   order allow,deny
+   deny from all
+</files>
+
+# <files "/php/special.xml">
+# order allow,deny
+# deny from all
+# </files>
+
+<Files ~ "^.*\.([Hh][Tt][AaPp])">
+   order allow,deny
+   deny from all
+   satisfy all
+</Files>
+
+# AuthUserFile /home/ubuntu/workspace/php/.htpasswd
+
+# AuthName "Accès protégé"
+
+# AuthType Basic
+
+# Require valid-user
+
