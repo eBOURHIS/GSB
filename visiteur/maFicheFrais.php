@@ -17,9 +17,26 @@ if (!$_SESSION['login']) {
 		'montantValide' => $get['montantValide']
 	);
 	$ligneFraisForfait = array(
-		'idForfait' => array('ETP','KM','NUI','REP'),
-		'quantite' => array($get['etape'],$get['kilometrage'],$get['nuitee'],$get['repas'])
+		'idForfait' => array(),
+		'quantite' => array()
 	);
+	foreach ($get as $key => $value) {
+		switch ($key) {
+			case 'mois':
+			case 'annee':
+			case 'montantValide':
+			case 'calculer':
+			case 'update':
+			case 'id':
+				continue;
+				break;
+			
+			default:
+				$ligneFraisForfait['idForfait'][] = $key;
+				$ligneFraisForfait['quantite'][] = $value;
+				break;
+		}
+	}
 	if (array_key_exists("calculer",$get)) {
 		$req = array('INSERT INTO FicheFrais (',') VALUES (',');');
 	
@@ -35,10 +52,10 @@ if (!$_SESSION['login']) {
 		}
 		$req = implode($req);
 		// echo $req."<br />";
-		$res = db($req);
+		$res = executeSQL($req);
 		
 		if ($res) {
-			$id = selectData(db("SELECT MAX(id) FROM FicheFrais WHERE idVisiteur='".$_SESSION['id']."';"))[0]['MAX(id)'];
+			$id = tableSQL("SELECT MAX(id) FROM FicheFrais WHERE idVisiteur='".$_SESSION['id']."';")[0]['MAX(id)'];
 			// print_r($id);
 			$req = array('INSERT INTO LigneFraisForfait (idFicheForfait',') VALUES ',';');
 	
@@ -56,7 +73,7 @@ if (!$_SESSION['login']) {
 	
 			$req = implode($req);
 			// echo $req;
-			$res = db($req); 
+			$res = executeSQL($req); 
 		
 			if ($res) {
 				$etat = "Mise-à-jour réussi !";
@@ -64,43 +81,10 @@ if (!$_SESSION['login']) {
 				$etat = "Erreur !";
 			}
 		}
-	} elseif (array_key_exists("update", $get)) {
-		$req = array("UPDATE FicheFrais SET ");
-		while (list($key,$value) = each($ficheFrais)) {
-			if ($key == 'idVisiteur') {
-				continue;
-			} elseif ($key == 'mois') {
-				$req[0] = $req[0]."$key=$value";
-			} else {
-				$req[] = "$key=$value";
-			}
-		}
-		$req = implode(",",$req)." WHERE idVisiteur='".$_SESSION['id']."' AND id=".$get['id'];
-		$res = db($req);
-		
-		if ($res) {
-			$reqS = array();
-			for ($i = 0; $i < count($ligneFraisForfait['idForfait']); $i++) {
-				 $reqS[] = "UPDATE LigneFraisForfait SET quantite=".$ligneFraisForfait['quantite'][$i]." WHERE idFicheForfait=".$get['id']." AND idForfait='".$ligneFraisForfait['idForfait'][$i]."';";
-			}
-			// print_r($reqS);
-			foreach ($reqS as $req) {
-				$res = db($req);
-				if (empty($res)) {
-					$etat = "Erreur (new) ! <br />".end($resS);
-					break;
-				} elseif ($req == end($reqS)) {
-					$etat = "Mise-à-jour réussi !";
-				}
-			}
-		} else {
-			$etat = "Erreur !";
-		}
 	}
 }
-	
-	// print_r($get);
 
+// print_r($get);
 
 ?>
 
@@ -150,77 +134,31 @@ if (!$_SESSION['login']) {
 						if (!$req) {
 							echo "<h5>".$req."</h5>";
 						}
-						if ($id or $_GET['id']) {
-							if ($_GET['id']) {
-								$id = $_GET['id'];
-							}
-							$res = array(
-								"ficheFrais" => selectData(db("SELECT mois,annee,montantValide FROM FicheFrais WHERE id=".$id)),
-								"ligneFraisForfait" => selectData(db("SELECT idForfait,quantite FROM LigneFraisForfait WHERE idFicheForfait=".$id))
-							);
-							$quantite = array();
-							$readonly = '';
-							// print_r($res);
-							foreach ($res['ligneFraisForfait'] as $array) {
-								$quantite[$array['idForfait']] = $array['quantite'];
-							}
-							// print_r($quantite);
-							$submit = "update";
-						} else {
-							$res = array(
-								"ficheFrais" => array(
-									array(
-										"mois"=>date('n'),
-										"annee"=>date('Y'),
-										"montantValide"=>0
-									)
-								)
-							);
-							$quantite = array(
-								"ETP"=>0,
-								"KM"=>0,
-								"NUI"=>0,
-								"REP"=>0
-							);
-							$readonly = 'readonly';
-							$submit = "calculer";
-						} #Afficher les valeurs un insert
 					?>
 					<table>
-						<tr class='invisible'>
-							<label for="id" class='invisible'>id</label>
-							<input readonly class='invisible' type="number" name="id" min='0' value="<?=$id ?>" />
-						</tr>
 						<tr>
 							<td><label for"mois">Mois</label></td>
-							<td><input id='mois' name='mois' type='number' min='1' max='12' value="<?= $res['ficheFrais'][0]['mois'] ?>" <?=$readonly ?> /></td>
+							<td><input id='mois' name='mois' type='number' min='1' max='12' value="<?=date('n') ?>" readonly /></td>
 						</tr>
 						<tr>
 							<td><label for"annee">Année</label></td>
-							<td><input id='annee' name='annee' type='number' min='1990' max='2100' value="<?= $res['ficheFrais'][0]['annee'] ?>" <?=$readonly ?> /></td>
+							<td><input id='annee' name='annee' type='number' min='1990' max='2100' value="<?=date('Y') ?>" readonly /></td>
 						</tr>
-						<tr>
-							<td><label for"nuitee">Nuitée</label></td>
-							<td><input id="nuitee" name="nuitee" type="number" min="0" value="<?= $quantite['NUI'] ?>" class='montant' /></td>
-						</tr>
-						<tr>
-							<td><label for"repas">Repas</label></td>
-							<td><input id="repas" name="repas" type="number" min="0"  value="<?= $quantite['REP'] ?>" class='montant' /></td>
-						</tr>
-						<tr>
-							<td><label for"kilometrage">Kilométrage</label></td>
-							<td><input id="kilometrage" name="kilometrage" type="number" min="0" value="<?= $quantite['KM'] ?>" class='montant' /></td>
-						</tr>
-						<tr>
-							<td><label for"etape">Etapes</label></td>
-							<td><input id="etape" name="etape" type="number" min="0" value="<?= $quantite['ETP'] ?>" class='montant' /></td>
-						</tr>
+						<?php 
+						$req = "SELECT * FROM Forfait";
+						$res = tableSQL($req);
+						for ($i = 0; $i < count($res); $i++): ?>
+							<tr>
+								<th><label for="<?=$res[$i]['id'] ?>"><?=$res[$i]["libelle"] ?></label></th>
+								<td><input type='number' name="<?=$res[$i]['id'] ?>" id="<?=$res[$i]['id'] ?>" min='0' class='montant' produit="<?=$res[$i]['montant'] ?>" value='0' /></td>
+							</tr>
+						<?php endfor; ?>
 						<tr>
 							<td><label for="montantValide">Montant</label></td>
 							<td><input type="number" name="montantValide" id="montantValide" value="<?= $res['ficheFrais'][0]['montantValide'] ?>" readonly /></td>
 						</tr>
 					</table>
-					<button id="calculer" class="buttoncenter" name="<?=$submit ?>">Envoyer</button>
+					<button id="calculer" class="buttoncenter" name="calculer">Envoyer</button>
 				</form>
 			</div>
 		</div>
@@ -228,25 +166,6 @@ if (!$_SESSION['login']) {
 </div>
 
 <script src="/jquery-3.1.1.min.js"></script>
-<?php
-echo "<script>";
-echo "function calc() {
-		var numbers = [];
-		var S = 0;";
-		
-echo "	numbers[0] = parseFloat($('#nuitee').val())*".NUI.";";
-echo "	numbers[1] = parseFloat($('#repas').val())*".REP.";";
-echo "	numbers[2] = parseFloat($('#kilometrage').val())*".KM.";";
-echo "	numbers[3] = parseFloat($('#etape').val())*".ETP.";";
-		
-echo "	for(var i=0; i < numbers.length; i++) {
-			S += numbers[i];
-		}
-		
-		$('#montantValide').val(S);
-	}";
-echo "</script>";
-?>
 <script>
 	var date = new Date();
 	
@@ -268,7 +187,15 @@ echo "</script>";
 	});
 	
 	$('.montant').change(function () {
-		calc();
+		var S = 0;
+		for (var i=0; i < $('.montant').length; i++) {
+			if (!parseFloat($('.montant')[i].value)) {
+				$('.montant')[i].value = 0;
+			}
+			S += parseFloat($('.montant')[i].value)*parseFloat($('.montant')[i].getAttribute('produit'));
+			// alert(S);
+		}
+		$('#montantValide').val(S);
 	});
 	
 	$('#calculer').click(function () {
