@@ -95,6 +95,12 @@ if (!$_SESSION['login']) {
    <meta charset="UTF-8">
    <link rel="stylesheet" href="/PPE2CSS.css" type="text/css" />
   <title>Galaxy Swiss Bourdin</title>
+  <script src="/jquery-3.1.1.min.js"></script>
+<?php
+	if (array_key_exists("id",$_GET)) {
+		echo "<script src='js/autoComplete.js'></script>";
+	}
+?>
 </head>
 <body>
 	<div id="wrapper">
@@ -121,6 +127,8 @@ if (!$_SESSION['login']) {
 			</ul>
 		</div>
 	</div>
+	
+	<div id='output'></div>
 
 	<div id="page" class="container">
 	<div id="portfolio-wrapper">
@@ -134,8 +142,16 @@ if (!$_SESSION['login']) {
 						if (!$req) {
 							echo "<h5>".$req."</h5>";
 						}
+						
+						if (array_key_exists('id', $_GET)) {
+							$id = $_GET['id'];
+						}
 					?>
 					<table>
+						<tr class='invisible'>
+							<label for="id" class='invisible'>id</label>
+							<input readonly class='invisible' type="number" name="id" id='id' min='0' value="<?=$id  ?>" />
+						</tr>
 						<tr>
 							<td><label for"mois">Mois</label></td>
 							<td><input id='mois' name='mois' type='number' min='1' max='12' value="<?=date('n') ?>" readonly /></td>
@@ -165,8 +181,19 @@ if (!$_SESSION['login']) {
 	</div>
 </div>
 
-<script src="/jquery-3.1.1.min.js"></script>
 <script>
+
+	function calc() {
+		var S = 0;
+		for (var i=0; i < $('.montant').length; i++) {
+			if (!parseFloat($('.montant')[i].value)) {
+				$('.montant')[i].value = 0;
+			}
+			S += parseFloat($('.montant')[i].value)*parseFloat($('.montant')[i].getAttribute('produit'));
+			// alert(S);
+		}
+		$('#montantValide').val(S);
+	}
 	var date = new Date();
 	
 	$('#annee').attr("max","2017");
@@ -187,18 +214,13 @@ if (!$_SESSION['login']) {
 	});
 	
 	$('.montant').change(function () {
-		var S = 0;
-		for (var i=0; i < $('.montant').length; i++) {
-			if (!parseFloat($('.montant')[i].value)) {
-				$('.montant')[i].value = 0;
-			}
-			S += parseFloat($('.montant')[i].value)*parseFloat($('.montant')[i].getAttribute('produit'));
-			// alert(S);
-		}
-		$('#montantValide').val(S);
+		calc();
 	});
 	
 	$('#calculer').click(function () {
+		if ($.trim($("#id").val())) {
+			$('#id').attr("disabled",true);
+		}
 		$('#formulaire').submit();
 	});
 </script>
