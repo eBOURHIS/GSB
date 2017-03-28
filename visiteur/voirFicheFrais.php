@@ -3,24 +3,27 @@
 session_start();
 
 require '../php/def.php';
+require '../php/connectAD.php';
 
 if (array_key_exists('id', $_GET)) {
 	$id = $_GET['id'];
 } else {
-	$id = selectData(executeSQL("SELECT MAX(id) FROM FicheFrais WHERE idVisiteur='".$_SESSION['id']."';"))[0]['MAX(id)'];
+	$id = tableSQL("SELECT MAX(id) FROM FicheFrais WHERE idVisiteur='".$_SESSION['id']."';")[0]['MAX(id)'];
 }
 // echo $id;
 
 $reqS = array(
 	"FicheFrais" => "SELECT mois,annee,montantValide,dateModif,idEtat FROM FicheFrais WHERE id=".$id,
 	"LigneFraisForfait" => "SELECT idForfait, quantite FROM LigneFraisForfait WHERE idFicheForfait=".$id,
-	"Etat" => "SELECT libelle FROM Etat WHERE id='"
+	"Etat" => "SELECT libelle FROM Etat WHERE id='",
+	"Forfait" => "SELECT id,libelle FROM Forfait"
 );
 $resS = array(
-	"FicheFrais" => selectData(executeSQL($reqS["FicheFrais"]))[0],
-	"LigneFraisForfait" => selectData(executeSQL($reqS["LigneFraisForfait"]))
+	"FicheFrais" => tableSQL($reqS["FicheFrais"])[0],
+	"LigneFraisForfait" => tableSQL($reqS["LigneFraisForfait"]),
+	"Forfait" => tableSQL($reqS["Forfait"])
 );
-$resS['Etat'] = selectData(executeSQL($reqS["Etat"].$resS["FicheFrais"]["idEtat"]."';"))[0];
+$resS['Etat'] = tableSQL($reqS["Etat"].$resS["FicheFrais"]["idEtat"]."';")[0];
 $tmpArray = array();
 
 foreach ($resS["LigneFraisForfait"] as $value) {
@@ -82,22 +85,33 @@ print_r($resS);
 				<div>
 					<h3>Frais au forfait</h3>
 					<table>
+							<?php 
+								for ($i = 0; $i < count($resS['Forfait']); $i++) {
+									// print_r($resS["Forfait"][$i]);
+									echo "<tr>";
+									 foreach (array_keys($resS["LigneFraisForfait"]) as $key) {
+									 	if ($resS["Forfait"][$i]["id"] == $key) {
+									 		$ordretd[] = $resS["Forfait"][$i]["id"];
+									 		echo "<th>".$resS["Forfait"][$i]["libelle"]."</th>";
+									 		echo "<td>".$resS["LigneFraisForfait"][$resS["Forfait"][$i]["id"]]."</td>";
+									 		echo "</tr>";
+									 	}
+									 }
+								}
+							?>
 						<tr>
-							<th>Forfait Etape</th>
-							<th>Frais Kilométrique</th>
-							<th>Nuitée Hôtel</th>
-							<th>Repas Restaurant</th>
 							<th>État</th>
-							<th>Date opération</th>
-							<th>Montant</th>
-						</tr>
-						<tr> <!-- CSS - Écran trop petit -->
-							<td><?=$resS['LigneFraisForfait']['ETP'] ?></td>
-							<td><?=$resS['LigneFraisForfait']['KM'] ?></td>
-							<td><?=$resS['LigneFraisForfait']['NUI'] ?></td>
-							<td><?=$resS['LigneFraisForfait']['REP'] ?></td>
 							<td><?=$resS['Etat']['libelle'] ?></td>
-							<td><?=$resS['FicheFrais']['dateModif'] ?></td>
+						</tr>
+						<tr>
+							<?php
+								if ($resS["FicheFrais"]["idEtat"] != "CR") {
+									echo "<th>Date opération</th>";
+									echo "<td>".$resS['FicheFrais']['dateModif']."</td>";
+								} 
+							?>
+						</tr>
+							<th>Montant</th>
 							<td><?=$resS['FicheFrais']['montantValide'] ?></td>
 						</tr>
 					</table>

@@ -64,11 +64,12 @@ if ($_GET) {
 		<div id="portfolio" class="container">
 			<div class="title">
 			    <?php
-			    	$res = executeSQL("SELECT mois,annee,montantValide,idEtat,id FROM FicheFrais WHERE idVisiteur='".$_SESSION['id']."'");
 					// print_r($res);
+					$req = "SELECT mois,annee,montantValide,idEtat,id FROM FicheFrais WHERE idVisiteur='".$_SESSION['id']."'";
+					$ficheFraisListe = tableSQL($req);
+					// print_r($ficheFraisListe);
 					
-			        if (!empty($res->num_rows)) {
-			        	$ficheFraisListe = selectData($res);
+			        if (!empty($ficheFraisListe)) {
 			            echo "<h2>Fiche frais</h2>";
 			            echo "<h3>".$_SESSION['nom']." ".$_SESSION['prenom']."</h3>";
 			            echo "<table>";
@@ -86,6 +87,7 @@ if ($_GET) {
 			            echo "</tr>";
 			            
 			            for ($i = count($ficheFraisListe)-1; $i >= 0; $i--) {
+			            	// print_r($ficheFraisListe[$i]);
 			                echo "<tr>";
 			             	foreach ($ficheFraisListe[$i] as $key => $value) {
 			             		if ($key == 'id') {
