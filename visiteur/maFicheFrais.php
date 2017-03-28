@@ -81,6 +81,33 @@ if (!$_SESSION['login']) {
 				$etat = "Erreur !";
 			}
 		}
+	} elseif (array_key_exists("update", $get)) {
+		$req = array("UPDATE FicheFrais SET ");
+		while (list($key,$value) = each($ficheFrais)) {
+			if ($key == 'idVisiteur') {
+				continue;
+			} elseif ($key == 'mois') {
+				$req[0] = $req[0]."$key=$value";
+			} else {
+				$req[] = "$key=$value";
+			}
+		}
+		$req = implode(",",$req)." WHERE idVisiteur='".$_SESSION['id']."' AND id=".$get['id'];
+		$res = executeSQL($req);
+		
+		if ($res) {
+			$reqS = array();
+			for ($i = 0; $i < count($ligneFraisForfait['idForfait']); $i++) {
+				 $reqS[] = "UPDATE LigneFraisForfait SET quantite=".$ligneFraisForfait['quantite'][$i]." WHERE idFicheForfait=".$get['id']." AND idForfait='".$ligneFraisForfait['idForfait'][$i]."';";
+			}
+			// print_r($reqS);
+			foreach ($reqS as $req) {
+				$res = executeSQL($req);
+				if ($req == end($reqS)) {
+					$etat = "Mise-à-jour réussi !";
+				}
+			}
+		}
 	}
 }
 
@@ -136,6 +163,7 @@ if (!$_SESSION['login']) {
 			<div class="title">
 				<h2>Etablissement de la fiche de frais</h2>
 				<br />
+				<h4 class="invisible">Chargement des données...</h4>
 				<form id="formulaire" action="" method="get">
 					<?php
 						echo "<h3>".$etat."</h3>";
@@ -149,16 +177,16 @@ if (!$_SESSION['login']) {
 					?>
 					<table>
 						<tr class='invisible'>
-							<label for="id" class='invisible'>id</label>
-							<input readonly class='invisible' type="number" name="id" id='id' min='0' value="<?=$id  ?>" />
+							<th><label for="id" class='invisible'>id</label></th>
+							<td><input readonly="readonly" class='invisible' type="number" name="id" id='id' min='0' value="<?=$id  ?>" /></td>
 						</tr>
 						<tr>
 							<td><label for"mois">Mois</label></td>
-							<td><input id='mois' name='mois' type='number' min='1' max='12' value="<?=date('n') ?>" readonly /></td>
+							<td><input id='mois' name='mois' type='number' value="<?=date('n') ?>" readonly /></td>
 						</tr>
 						<tr>
 							<td><label for"annee">Année</label></td>
-							<td><input id='annee' name='annee' type='number' min='1990' max='2100' value="<?=date('Y') ?>" readonly /></td>
+							<td><input id='annee' name='annee' type='number' value="<?=date('Y') ?>" readonly /></td>
 						</tr>
 						<?php 
 						$req = "SELECT * FROM Forfait";
@@ -189,24 +217,10 @@ if (!$_SESSION['login']) {
 			if (!parseFloat($('.montant')[i].value)) {
 				$('.montant')[i].value = 0;
 			}
-			S += parseFloat($('.montant')[i].value)*parseFloat($('.montant')[i].getAttribute('produit'));
+			S += parseFloat($('.montant')[i].value) * parseFloat($('.montant')[i].getAttribute('produit'));
 			// alert(S);
 		}
 		$('#montantValide').val(S);
-	}
-	var date = new Date();
-	
-	$('#annee').attr("max","2017");
-	
-	function checkDate() {
-		var Newdate = new Date($('#annee').val()+'-12-31');
-		
-		if ($('#annee').val() == date.getFullYear()) {
-			$('#mois').attr('max',date.getMonth()+1);
-			$('#mois').val(date.getMonth()+1);
-		} else {
-			$('#mois').attr('max',Newdate.getMonth()+1);
-		}
 	}
 	
 	$('#annee').change(function () {
@@ -218,7 +232,7 @@ if (!$_SESSION['login']) {
 	});
 	
 	$('#calculer').click(function () {
-		if ($.trim($("#id").val())) {
+		if (!$.trim($("#id").val())) {
 			$('#id').attr("disabled",true);
 		}
 		$('#formulaire').submit();
