@@ -23,6 +23,7 @@ function menu ($login) {
   $compta = array(
       'Valider une fiche de frais' => "/comptable/ValidationFrais.php",
       'Mettre en paiement une fiche de frais' => "/comptable/MettreEnPaiement.php",
+      'Modifier les forfaits' => "/comptable/FraisForfaits.php"
   );
    
   $visiteur = array(
@@ -82,14 +83,6 @@ function motdepasse($nbre) { // Permet de générer mot de passe aléatoire avec
   return $pass;
 }
 
-// // $req = "SELECT id, montant FROM Forfait";
-// // $res = db($req);
-
-// while ($row = $res->fetch_assoc()) { #Définition des constantes
-// 	define($row['id'], $row['montant']);
-// }
-
-
 // Cette fonction sert à créer la liste déroulante des mois dans l'écran ValidationsFrais.php
 
 function SelectMois($current_month, $current_year, $month, $sSelect, $sOption, $selectedDate = null)
@@ -112,6 +105,25 @@ function SelectMois($current_month, $current_year, $month, $sSelect, $sOption, $
     }
     $select = sprintf($sSelect, $options);
     return $select;
+}
+
+function typeChamp($champ) {
+  $s = "";
+  $type = gettype($champ);
+  
+  switch ($type) {
+    case 'integer':
+    case 'double':
+      $s = "number";
+      break;
+      
+    default:
+      $s = 'text';
+      break;
+  }
+  
+  return $s;
+  
 }
 
 ?>
