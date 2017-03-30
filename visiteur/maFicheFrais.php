@@ -125,7 +125,7 @@ if (!$_SESSION['login']) {
   <script src="/jquery-3.1.1.min.js"></script>
 <?php
 	if (array_key_exists("id",$_GET)) {
-		echo "<script src='js/autoComplete.js'></script>";
+		echo "<script src='/js/autoCompleteFicheFrais.js'></script>";
 	}
 ?>
 </head>
@@ -233,7 +233,7 @@ if (!$_SESSION['login']) {
 	
 	$('#calculer').click(function () {
 		if (!$.trim($("#id").val())) {
-			$('#id').attr("disabled",true);
+			$('#id').attr("disabled","disabled");
 		}
 		$('#formulaire').submit();
 	});
