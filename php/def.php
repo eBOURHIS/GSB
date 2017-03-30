@@ -1,19 +1,37 @@
 <?php
 
-switch (explode('/',$_SERVER[PHP_SELF])[1]) {
-  case 'admin':
-  case 'comptable':
-  case 'visiteur':
-    $su = simplexml_load_file("../php/special.xml");
-    break;
+/**
+ *
+ * Chargement des login et mot de passe du comptable et de l'admin
+ * 
+ */
+ 
+function lectureLoginXml() {
+  switch (explode('/',$_SERVER[PHP_SELF])[1]) {
+    case 'admin':
+    case 'comptable':
+    case 'visiteur':
+      $su = simplexml_load_file("../php/special.xml");
+      break;
   
-  default:
+   default:
     $su = simplexml_load_file("php/special.xml");
     break;
+  }
+  
+  return $su;
 }
 
+/**
+ *
+ * Génére le menu de navigation pour toute les sessions
+ * 
+ * @param $login string Login de l'utilisateur connecté
+ * 
+ */
+
 function menu ($login) {
-  global $su;
+  $su = lectureLoginXML();
   
   $admin = array(
       "Liste des visiteurs" => "/admin/ListVisiteur.php", 
@@ -58,8 +76,16 @@ function menu ($login) {
 
 }
 
+/**
+ *
+ * Permet de vérifier si l'utilisateur est bien l'administrateur
+ * 
+ * @param $login string Login de l'utilisateur connecté
+ * 
+ */
+
 function checkAdmin ($login) {
-  global $su;
+  $su = lectureLoginXml();
   
   if ($login == (string)$su->admin->login) {
 		return true;
@@ -68,10 +94,14 @@ function checkAdmin ($login) {
 	}
 }
 
-function verificationDate() {
-  return date('d/m/Y');
-}
-
+/**
+ *
+ * Permet de générer un mot de passe aléatoire.
+ * 
+ * @param $nbre integer Nombre de caractère du mot de passe.
+ * 
+ */
+ 
 function motdepasse($nbre) { // Permet de générer mot de passe aléatoire avec un nombre définis de caractères
   for($i = 0; $i < $nbre; $i++) {
     if ($i%2) {
@@ -83,7 +113,25 @@ function motdepasse($nbre) { // Permet de générer mot de passe aléatoire avec
   return $pass;
 }
 
-// Cette fonction sert à créer la liste déroulante des mois dans l'écran ValidationsFrais.php
+/**
+ *
+ * <description fonction>
+ * 
+ * @param $current_month integer <description>
+ * 
+ * @param $current_year integer <description>
+ * 
+ * @param $month integer <description>
+ * 
+ * @param $sSelect <type> <description>
+ * 
+ * @param $sOption <type> <description>
+ * 
+ * @param $selectedDate <type> <description>
+ * 
+ * @return <type> <description>
+ * 
+ */
 
 function SelectMois($current_month, $current_year, $month, $sSelect, $sOption, $selectedDate = null)
 {
@@ -106,6 +154,16 @@ function SelectMois($current_month, $current_year, $month, $sSelect, $sOption, $
     $select = sprintf($sSelect, $options);
     return $select;
 }
+
+/**
+ *
+ * Cette fonction sert à déterminer le type d'une variable et à le convertir en attribut "type" dans <input>
+ * 
+ * @param $champ mixed variable dont le type doit être déterminé et converti
+ * 
+ * @return string attribut type d'<input>
+ * 
+ */
 
 function typeChamp($champ) {
   $s = "";
