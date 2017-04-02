@@ -122,7 +122,7 @@ if (!$_SESSION['login']) {
    <meta charset="UTF-8">
    <link rel="stylesheet" href="/PPE2CSS.css" type="text/css" />
   <title>Galaxy Swiss Bourdin</title>
-  <script src="/jquery-3.1.1.min.js"></script>
+  <script src="/js/jquery-3.1.1.min.js"></script>
 <?php
 	if (array_key_exists("id",$_GET)) {
 		echo "<script src='/js/autoCompleteFicheFrais.js'></script>";
@@ -222,10 +222,6 @@ if (!$_SESSION['login']) {
 		}
 		$('#montantValide').val(S);
 	}
-	
-	$('#annee').change(function () {
-		checkDate();
-	});
 	
 	$('.montant').change(function () {
 		calc();

@@ -235,7 +235,7 @@ if ($_POST['update']) {
 </form>	
 </div>
 
-<script type="text/javascript" src="/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
 
 	function writeLogin() {
