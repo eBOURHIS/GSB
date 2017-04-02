@@ -3,6 +3,7 @@
 session_start();
 
 require '../php/def.php';
+require '../php/connectAD.php';
 
 if ($_GET) {
 	$result = executeSQL('DELETE FROM Visiteur WHERE id="'.$_GET['id'].'";');
@@ -13,10 +14,12 @@ if ($_GET) {
 
 <!DOCTYPE html>
 <html>
-   <head>
-   <meta charset="UTF-8">
-   <link rel="stylesheet" href="/PPE2CSS.css" type="text/css" />
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/PPE2CSS.css" type="text/css" />
   <title>Galaxy Swiss Bourdin</title>
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/deleteSQL.js"></script>
 </head>
 <body>
 	<div id="wrapper">
@@ -41,37 +44,38 @@ if ($_GET) {
 				<?php if (!checkAdmin($_SESSION['login'])) {echo "Vous n'avez pas accèes à cette page."; exit();} ?>
 				<h2>Liste des visiteurs</h2>
 	            <br />
-	            <table id='adminTable'>
+	            <h5 class="invisible">Mise à jour effectué</h5>
+	            <p id="chargement" class='invisible'>
+	            	Chargement...
+	            </p>
+	            <?php 
+	            	$result = tableSQL("SELECT nom,prenom,adresse,cp,ville,dateEmbauche,id FROM Visiteur");
+	            ?>
+	            <table id='Visiteur'>
 	            	<tr>
-	            		<th>nom</th>
-	            		<th>prenom</th>
-	            		<th>adresse</th>
-	            		<th>code postal</th>
-	            		<th>ville</th>
-	            		<th>date embauche</th>
+	            		<?php 
+	            			foreach ($result[0] as $key => $value) {
+	            				if ($key != "id") {
+	            					echo "<th>".$key."</th>";
+	            				}
+	            			}
+	            		?>
 	            		<th>Modifier</th>
 	            		<th>Supprimer</th>
 	            	</tr>
 	            		<?php 
-							$result = executeSQL("SELECT nom,prenom,adresse,cp,ville,dateEmbauche,id FROM Visiteur;");
-	
-							if ($result->num_rows) {
-								while ($row = $result->fetch_assoc()) {
-									echo "<tr>";
-									echo "<td>".$row['nom']."</td>";
-									echo "<td>".$row['prenom']."</td>";
-									echo "<td>".$row['adresse']."</td>";
-									echo "<td>".$row['cp']."</td>";
-									echo "<td>".$row['ville']."</td>";
-									echo "<td>".$row['dateEmbauche']."</td>";
-									echo "<td>"."<a href='/admin/GestionVisiteur.php?id=".$row['id']."' title='modifier'><img src='/icon/modifier.png' alt='modifier' class='iconPlus' />"."</td>";
-									echo "<td>"."<a href='/admin/ListVisiteur.php?id=".$row['id']."' title='supprimer'><img src='/icon/supprimer.png' alt='supprimer' class='iconPlus' />"."</td>";
-									echo "</tr>";
-								}
-							} else {
-								echo "Erreur";
-							}
-	    	     	   ?>
+	            			for ($i = 0; $i < count($result); $i++){
+	            				echo "<tr id='tr".$result[$i]['id']."'>";
+	            				foreach ($result[$i] as $key => $row) {
+	            					if ($key != "id") {
+	            						echo "<td>".$row."</td>";
+	            					}
+	            				}
+	            				echo "<td><a href=/admin/GestionVisiteur.php?id=".$result[$i]['id']." title='modifier'><img src='/icon/modifier.png' alt='modifier' class='iconPlus' /></a></td>";
+	            				echo "<td><img src='/icon/supprimer.png' alt='supprimer' class='iconPlus' title='supprimer' id='suppr".$result[$i]['id']."' /></td>";
+	            				echo "</tr>";
+	            			}
+	            		?>
 	            </table>
 	            <figure id='plus'>
 	            	<img src="/icon/plus.png" class='iconPlus' title='Ajouter' id='ajouter' />
