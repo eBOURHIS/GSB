@@ -3,13 +3,12 @@
 require "../php/connectAD.php";
 
 $req = "DELETE FROM ".$_POST["table"]." WHERE id='".$_POST["id"]."';";
-$res = executeSQL($req);
+
+$json = supprSQL($req);
+$json['req'] = $req;
 
 header('Content-Type: application/json');
 
-?>
+echo json_encode($json);
 
-{
-    "req":"<?=$req ?>",
-    "res":"<?= $res ?>"
-}
+?>
