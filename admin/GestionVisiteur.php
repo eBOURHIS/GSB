@@ -49,7 +49,7 @@ function listInput($row) {
 						break;
 								
 					case 'id':
-						echo "<td class='".$key."'><input class='".$key."' name='".$key."' type='text' value='' readonly /></td>";
+						echo "<td class='".$key."'><input id='id' class='".$key."' name='".$key."' type='text' value='' readonly /></td>";
 						break;
 									
 					default:
@@ -59,7 +59,7 @@ function listInput($row) {
 			echo "</tr>";
 		}
 		echo "</table>";
-		echo "<input id='update' class='buttoncenter' name='insert' type='submit' />";
+		echo "<button id='insert' value='insert' name='insert'>Envoyer</button>";
 	}
 		
 }
@@ -105,69 +105,36 @@ if ($_POST['update']) {
 		exit();
 }
 } elseif ($_POST['insert']) {
-	$champs = array_keys($_POST);
-	$values = $_POST;
-	$sql = "INSERT INTO Visiteur ";
+	$get = $_POST;
+	$fields = array();
+	$values = array();
+	$pwd = motdepasse(12);
+	$sql = "";
 	
-	for ($i = 0; $i < count($champs); $i++) {
-		 switch ($champs[$i]) {
+	foreach ($get as $field => $value) {
+		switch ($field) {
+			case 'insert':
+				break;
+				
 			case 'id':
-				$sql = $sql.'(id,';
+				$fields[] = $field;
+				$values[] = '"'.AB3.'"';
 				break;
 				
 			case 'pwd':
-				$sql = $sql.$champs[$i].') VALUES (';
-				break;
-				
-			case 'insert':
+				$fields[] = $field;
+				$values[] = '"'.md5($pwd).'"';
 				break;
 			
 			default:
-				$sql = $sql.$champs[$i].',';
+				$fields[] = $field;
+				$values[] = $value;
 				break;
 		}
 	}
-	for ($i = 0; $i < count($values); $i++) {
-		switch ($champs[$i]) {
-			case 'id':
-				$sql = $sql."'02'".','; //Cahier des charges sur l'id
-				break;
-				
-			case 'pwd':
-				$sql = $sql."'".motdepasse(12)."');";
-				break; // Penser à la fonction explode pour la date
-			
-			case 'nom':
-				$sql = $sql."'".strtoupper($values[$champs[$i]])."',";
-				break;
-			
-			case 'ville':
-				$sql = $sql."'".strtoupper($values[$champs[$i]])."',";
-				break;
-			
-			case 'prenom':
-				$sql = $sql."'".ucfirst($values[$champs[$i]])."',";
-				break;
-				
-			case 'insert':
-				break;
-			
-			default:
-				$sql = $sql."'".$values[$champs[$i]]."',";
-				break;
-		}
-	}
-	//echo $sql;
-	$res = executeSQL($sql);
-	if ($res === true) {
-		$etat = "Mise-à-jour réussi !";
-		header('location: /admin/GestionVisiteur.php?id=02&etat='.$etat); //Attention id
-		exit();
-	} elseif ($res === false) {
-		$etat = "Mise-à-jour échoué.";
-		header('location: /admin/GestionVisiteur.php?etat='.$etat);
-		exit();
-}
+	
+	$sql = "INSERT INTO Visiteur (".implode(",",$fields).") VALUES (".implode(",",$values).")";
+	$res = executeSQL($sql); //afficher mot de passe ; requête ajax pour update ?
 }
 
 
@@ -213,7 +180,7 @@ if ($_POST['update']) {
 			<div class="title">
 				<h2>Visiteurs</h2>
 				<br />
-				<form id="formulaire" action="" method="post">
+				<form id="formulaire" action="" method="POST">
 						<?php 
 							if ($_GET) {
 								if ($_GET['etat']) {
@@ -238,6 +205,8 @@ if ($_POST['update']) {
 <script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
 
+
+$(document).ready(function () {
 	function writeLogin() {
 		if ($.trim($('#nom').val()) && $.trim($('#prenom').val()) != "") {
 			var nom = $('#nom').val().toLowerCase(),
@@ -250,6 +219,22 @@ if ($_POST['update']) {
 	$('#nom').blur(function () {writeLogin();});
 	$('#prenom').blur(function () {writeLogin();});
 
+	$('#insert').click(function () {
+		var inputs = $("input"), value;
+		for (var i = 0; i < inputs.length; i++) {
+			switch ($(inputs[i]).attr("id")) {
+				case 'insert':
+				case 'id':
+				case 'pwd':
+					break;
+					
+				default:
+					value = '"' + $(inputs[i]).val() + '"';
+					$(inputs[i]).val(value);
+			}
+		}
+	});
+});
 </script>
   </body>
   </html>
