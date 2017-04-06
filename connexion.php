@@ -27,7 +27,7 @@ if ($_SESSION['login']) { //Si l'utilisateur est déjà connecté
 			$err = "mot de passe incorrect";
     	}
 	} else { //Si quelque chose se passe mal ou que c'est l'administareur ou le comptable
-		foreach ($su as $value) {
+		foreach (lectureLoginXML() as $value) {
 			if ($login == $value->login and $pwd == $value->pwd) {
 				$_SESSION['nom'] = (string)$value->nom;
     			$_SESSION['prenom'] = (string)$value->prenom;
