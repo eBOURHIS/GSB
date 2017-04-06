@@ -100,16 +100,23 @@ function checkAdmin ($login) {
  * 
  * @param $nbre integer Nombre de caractère du mot de passe.
  * 
+ * @return string mot de passe
+ * 
  */
  
-function motdepasse($nbre) { // Permet de générer mot de passe aléatoire avec un nombre définis de caractères
+function motdepasse($nbre) {
+  $pass = "";
+  
   for($i = 0; $i < $nbre; $i++) {
-    if ($i%2) {
-      $pass = $pass.chr(rand(33,93));
+    if ($i%3 == 1) {
+      $pass .= chr(rand(48,57));
+    } elseif ($i%3 == 2) {
+      $pass .= chr(rand(65,90));
     } else {
-      $pass = $pass.chr(rand(97,125));
+      $pass .= chr(rand(97,122));
     }
   }
+  
   return $pass;
 }
 
