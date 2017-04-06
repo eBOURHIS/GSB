@@ -482,5 +482,42 @@ function ligneSQL($sql) {
 	return $rows;
 }
 
+/**
+ * 
+ * Vérifie si une requête SQL delete a affecté des ligne
+ * 
+ * @param sql string requête SQL (delete)
+ * 
+ * @return array retrourne le nombre de ligne affecté et le résultat d'une requête
+ * 
+ */
+function supprSQL($sql) {
+	global $modeacces, $connexion;
+
+
+	if ($modeacces=="pdo") {
+		$result = $connexion->query($sql);
+		$affected = $connexion->rowCount();
+	}
+
+	if ($modeacces=="mysql") {
+		$result = mysql_query($sql);
+		$affected = mysql_affected_rows($connexion);
+
+	}
+
+	if ($modeacces=="mysqli") {
+		$result = $connexion->query($sql);
+		$affected = $connexion->affected_rows;
+	}
+
+	return array(
+		"affected" => $affected,
+		"result" => $result
+	);
+}
+
+
+
 
 ?>
