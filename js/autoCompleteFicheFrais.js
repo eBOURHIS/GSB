@@ -14,9 +14,6 @@ $(document).ready(function () {
             }
             calc();
             $('#calculer').attr('name','update');
-            // for (var i = 1; i < tr.length; i++) {
-            //     $(tr[i]).delay(800).slideDown("slow");
-            // }
             $("h4.invisible").slideUp(1200);
             $("#formulaire").slideDown(1200);
         }
