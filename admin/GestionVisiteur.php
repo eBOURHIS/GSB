@@ -5,65 +5,6 @@ session_start();
 require '../php/def.php';
 require '../php/connectAD.php';
 
-function listInput($row) {
-	if (gettype($row) == 'array') {
-		echo "<table id='visiteurs'>";
-		while (list($key, $value) = each($row)) {
-			echo "<tr>";
-			echo "<td class='".$key."'><label for='".$key."'class='".$key."'>".$key."</label></td>";
-				switch ($key) {
-					case 'dateEmbauche':
-						echo "<td><input name='".$key."' type='date' value='".$value."' placeholder='aaaa-mm-jj' /></td>";
-						break;
-								
-					case 'pwd':
-						echo "<td><input name='".$key."' type='password' value='".$value."' /></td>";
-						break;
-								
-					case 'id':
-						echo "<td class='".$key."'><input class='".$key."' name='".$key."' type='text' value='".$value."' readonly /></td>";
-						break;
-									
-					default:
-						echo "<td><input name='".$key."' type='text' value='".$value."' id='".$key."'/></td>";
-						break;
-				}
-			echo "</tr>";
-		}
-		echo "</table>";
-		echo "<input id='update' class='buttoncenter' name='update' type='submit' />";
-	} else {
-		$res = executeSQL("SELECT * FROM Visiteur WHERE id='10';");
-		$row = $res->fetch_assoc();
-		echo "<table id='visiteurs'>";
-		while (list($key,$value) = each($row)) {
-			echo "<tr>";
-			echo "<td class='".$key."'><label for='".$key."'class='".$key."'>".$key."</label></td>";
-				switch ($key) {
-					case 'dateEmbauche':
-						echo "<td><input name='".$key."' type='date' value='' placeholder='aaaa-mm-jj' /></td>";
-						break;
-								
-					case 'pwd':
-						echo "<td><input name='".$key."' type='password' value='1234' readonly /></td>";
-						break;
-								
-					case 'id':
-						echo "<td class='".$key."'><input id='id' class='".$key."' name='".$key."' type='text' value='' readonly /></td>";
-						break;
-									
-					default:
-						echo "<td><input name='".$key."' type='text' value='' id='".$key."'/></td>";
-						break;
-				}
-			echo "</tr>";
-		}
-		echo "</table>";
-		echo "<button id='insert' value='insert' name='insert'>Envoyer</button>";
-	}
-		
-}
-
 if ($_POST['update']) {
 	$sql = "UPDATE Visiteur SET ";
 	while (list($key, $value) = each($_POST)) {
@@ -118,7 +59,7 @@ if ($_POST['update']) {
 				
 			case 'id':
 				$fields[] = $field;
-				$values[] = '"'.AB3.'"';
+				$values[] = '"'.'AB3'.'"';
 				break;
 				
 			case 'pwd':
@@ -142,10 +83,12 @@ if ($_POST['update']) {
 
 <!DOCTYPE html>
 <html>
-   <head>
-   <meta charset="UTF-8">
-   <link rel="stylesheet" href="/PPE2CSS.css" type="text/css" />
-  <title>Galaxy Swiss Bourdin</title>
+<head>
+	<meta charset="UTF-8">
+   	<link rel="stylesheet" href="/PPE2CSS.css" type="text/css" />
+  	<title>Galaxy Swiss Bourdin</title>
+  	<script src="/js/jquery-3.1.1.min.js"></script>
+	<script src="/js/def.js"></script>
 </head>
 </body>
 <h1></h1>
@@ -178,22 +121,65 @@ if ($_POST['update']) {
 	<div id="portfolio-wrapper">
 		<div id="portfolio" class="container">
 			<div class="title">
-				<h2>Visiteurs</h2>
+				<h2>Ajouter un visiteur</h2>
 				<br />
+				<h5 id='etat' class='invisible'></h5>
+				<br />
+				<p id='h3pwd' class='invisible'></p>
 				<form id="formulaire" action="" method="POST">
 						<?php 
-							if ($_GET) {
-								if ($_GET['etat']) {
-									echo "<h3>".$_GET['etat']."</h3>";
-								} 
-								if ($_GET['id']) {
-									$req = 'SELECT * FROM Visiteur WHERE id="'.$_GET['id'].'";';
-									$res = executeSQL($req);
-									listInput($res->fetch_assoc());
+							$req = 'SELECT * FROM Visiteur LIMIT 1;';
+							$res = tableSQL($req);
+							echo "<table>";
+							foreach ($res[0] as $key => $value) {
+								if ($key == 'id') {
+									echo "<tr class='invisible'>";
+									echo "<th class=invisible><label class='invisible for='$key'>$key</label></th>";
+									if (array_key_exists('id',$_GET)) {
+										echo "<td class='invisible'><input name='$key' id='$key' type='hidden' value='".$_GET['id']."' /></td>";
+									} else {
+										echo "<td class='invisible'><input name='$key' id='$key' type='hidden' value='' /></td>";
+									}
+									echo "</tr>";
+								} else {
+									echo "<tr>";
+									echo "<th><label for='$key'>$key</label></th>";
+									switch ($key) {
+										case 'cp':
+											echo "<td><input name='$key' id='$key' type='text' pattern='[0-9]{5}' title='Code postal' required='required'/></td>";
+											break;
+										
+										case 'dateEmbauche':
+											echo "<td>";
+											echo "<table class='tableDate'>";
+											echo "<tr>";
+											echo "<th>JJ</th><th>MM</th><th>AAAA</th>";
+											echo "</tr>";
+											echo "<td>";
+											echo selectNombre(31,"jour",1,true);
+											echo "</td><td>";
+											echo selectNombre(12,"mois",1,true);
+											echo "</td><td>";
+											echo selectNombre(intval(date('Y')),"annee",2002,true);
+											echo "</td>";
+											echo "</table>";
+											echo "</td>";
+											break;
+											
+										case 'pwd':
+											echo "<td><input name='$key' id='$key' type='password' value='....' required='required' readonly='readonly' /></td>";
+											break;
+									
+										default:
+											echo "<td><input name='$key' id='$key' type='".typeChamp($value)."'required='required' /></td>";
+											break;
 								}
-							} else {
-								listInput('new');
+								echo "</tr>";
 							}
+								}
+							echo "</table>";
+							echo "<input type='reset' />";
+							echo "<input type='button' name='insert' id='insert' value='Envoyer' />";
 						?>
 			</div>
 		</div>
@@ -202,39 +188,7 @@ if ($_POST['update']) {
 </form>	
 </div>
 
-<script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
-<script type="text/javascript">
+<script src='js/ListVisiteur.js'></script>
 
-
-$(document).ready(function () {
-	function writeLogin() {
-		if ($.trim($('#nom').val()) && $.trim($('#prenom').val()) != "") {
-			var nom = $('#nom').val().toLowerCase(),
-				prenom = $('#prenom').val().toUpperCase();
-				
-			$('#login').val(prenom[0]+nom);
-		}
-	}
-
-	$('#nom').blur(function () {writeLogin();});
-	$('#prenom').blur(function () {writeLogin();});
-
-	$('#insert').click(function () {
-		var inputs = $("input"), value;
-		for (var i = 0; i < inputs.length; i++) {
-			switch ($(inputs[i]).attr("id")) {
-				case 'insert':
-				case 'id':
-				case 'pwd':
-					break;
-					
-				default:
-					value = '"' + $(inputs[i]).val() + '"';
-					$(inputs[i]).val(value);
-			}
-		}
-	});
-});
-</script>
   </body>
   </html>

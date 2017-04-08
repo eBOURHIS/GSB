@@ -298,6 +298,7 @@ hr {
 	border: 3px solid black;
 	padding: 1.5em 1.5em 1.5em 1.5em;
 	border-color: #2B73B7;
+	text-transform: capitalize;
 }
 
 figure#plus {
@@ -333,6 +334,23 @@ figure#plus {
 
 #visiteurs td {
 	border: none !important;
+}
+
+td > table td, td > table th {
+	border: none !important;
+	padding: 0 0 0 1em !important;
+}
+
+.tableDate select {
+	width: auto;
+}
+
+input.date[name='annee'] {
+	width: 4em;
+}
+
+strong.error {
+	color: red;
 }
 
 /** CONTENT */
@@ -765,7 +783,7 @@ input[type=radio] {
  border:none;
  width:10px;
  }
-input[type=submit], input[type=reset] {
+input[type=submit], input[type=reset], input[type=button] {
  width:145px;
  margin-left:5px;
  box-shadow:1px 1px 1px #7376fd;
