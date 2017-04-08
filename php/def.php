@@ -26,7 +26,7 @@ function lectureLoginXml() {
  *
  * Génére le menu de navigation pour toute les sessions
  * 
- * @param $login string Login de l'utilisateur connecté
+ * @param string $login Login de l'utilisateur connecté
  * 
  */
 
@@ -35,7 +35,7 @@ function menu ($login) {
   
   $admin = array(
       "Liste des visiteurs" => "/admin/ListVisiteur.php", 
-      'Ajouter des visiteurs' => "/admin/GestionVisiteur.php",
+      'Gestion visiteur' => "/admin/GestionVisiteur.php",
   );
   
   $compta = array(
@@ -80,7 +80,7 @@ function menu ($login) {
  *
  * Permet de vérifier si l'utilisateur est bien l'administrateur
  * 
- * @param $login string Login de l'utilisateur connecté
+ * @param string $login Login de l'utilisateur connecté
  * 
  */
 
@@ -98,7 +98,7 @@ function checkAdmin ($login) {
  *
  * Permet de générer un mot de passe aléatoire.
  * 
- * @param $nbre integer Nombre de caractère du mot de passe.
+ * @param int $nbre Nombre de caractère du mot de passe.
  * 
  * @return string mot de passe
  * 
@@ -108,12 +108,18 @@ function motdepasse($nbre) {
   $pass = "";
   
   for($i = 0; $i < $nbre; $i++) {
-    if ($i%3 == 1) {
-      $pass .= chr(rand(48,57));
-    } elseif ($i%3 == 2) {
-      $pass .= chr(rand(65,90));
-    } else {
-      $pass .= chr(rand(97,122));
+    switch ($i%3) {
+      case 1:
+        $pass .= chr(rand(48,57));
+        break;
+        
+      case 2:
+        $pass .= chr(rand(65,90));
+        break;
+      
+      default:
+        $pass .= chr(rand(97,122));
+        break;
     }
   }
   
@@ -122,53 +128,11 @@ function motdepasse($nbre) {
 
 /**
  *
- * <description fonction>
+ * Cette fonction sert à déterminer le type d'une variable et à le convertir en attribut "type" dans \<input\>
  * 
- * @param $current_month integer <description>
+ * @param mixed $champ variable dont le type doit être déterminé et convertis
  * 
- * @param $current_year integer <description>
- * 
- * @param $month integer <description>
- * 
- * @param $sSelect <type> <description>
- * 
- * @param $sOption <type> <description>
- * 
- * @param $selectedDate <type> <description>
- * 
- * @return <type> <description>
- * 
- */
-
-function SelectMois($current_month, $current_year, $month, $sSelect, $sOption, $selectedDate = null)
-{
-    $options = sprintf($sOption, '-1', 'Sélectionnez un mois');
-    for($i = 0, $m = $current_month, $y = $current_year; $i < 12; $i++, $m--)
-    {
-        if($m < 1)
-        {
-            $m = 12;
-            $y--;
-        }
-        $value = sprintf("%02d",$m) .''. $current_year;
-        if(!is_null($selectedDate) && $selectedDate == $value)
-        {
-            $value .= '" selected="selected';
-        }
-        $label = $month[(int)$m] ." - ". $y;
-        $options .= sprintf($sOption, $value, $label);
-    }
-    $select = sprintf($sSelect, $options);
-    return $select;
-}
-
-/**
- *
- * Cette fonction sert à déterminer le type d'une variable et à le convertir en attribut "type" dans <input>
- * 
- * @param $champ mixed variable dont le type doit être déterminé et converti
- * 
- * @return string attribut type d'<input>
+ * @return attribut string type d'\<input\>
  * 
  */
 
@@ -189,6 +153,43 @@ function typeChamp($champ) {
   
   return $s;
   
+}
+
+/**
+ * 
+ * Cette fonction permet de générer un menu <select> avec des nombres qui s'incrémente
+ * 
+ * @param int $max le plus grand nombre qu'il devra apparaitre dans le menu \<select\>
+ * 
+ * @param string $name l'attribut name de \<select\>
+ * 
+ * @param int $min le plus petit nombre qu'il devra apparaitre dans le menu \<select\> par défaut 0
+ * 
+ * @param boolean $required activation de l'attribut required par défaut il n'y en a pas
+ * 
+ */
+
+function selectNombre($max, $name, $min = 0, $required = false) {
+  $result = "<select name='$name' id='$name' ";
+  
+  if ($required) {
+    $result .= "required='required'";
+  }
+  $result .= ">";
+  
+  for ($i = $min; $i <= $max; $i++) {
+     $result .= "<option value='$i'>";
+     
+     if ($i < 10) {
+       $result .= "0".$i;
+     } else {
+       $result .= $i;
+     }
+     
+     $result .= "</option>";
+  }
+  
+  return $result."</select>";
 }
 
 ?>
