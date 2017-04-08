@@ -1,3 +1,24 @@
+/**
+ * 
+ * @file Bibliothéque de fonction js
+ * @author Loïc Penaud <lpenaud@zaclys.net>
+ * @license Apache-2.0
+ * @see Check {@link https://github.com/eBOURHIS/GSB GitHub}.
+ * 
+ * @requires "jquery-3.1.1.min.js"
+ * 
+ */
+
+/**
+ * 
+ * Envois une requête ajax de suppression de champs sql
+ * 
+ * @param {object} element DOM objet
+ * 
+ * @param {string} msgConfirm Message de confirmation (confirm())
+ * 
+ */
+
 function deleteSQL(element, msgConfirm) {
     var err = false;
 
@@ -39,5 +60,20 @@ function deleteSQL(element, msgConfirm) {
                 $("table").fadeIn("slow");
             },
         });
+    }
+}
+
+/**
+ * 
+ * Permet d'écrire automatiquement le login de l'utilisateur
+ *  
+ */
+
+function writeLogin() {
+    if ($.trim($('#nom').val()) && $.trim($('#prenom').val()) != "") {
+        var nom = $('#nom').val().toLowerCase(),
+            prenom = $('#prenom').val().toUpperCase();
+
+        $('#login').val(prenom[0] + nom);
     }
 }
