@@ -20,6 +20,7 @@ if ($_GET) {
   <title>Galaxy Swiss Bourdin</title>
   <script src="/js/jquery-3.1.1.min.js"></script>
   <script src="/js/deleteSQL.js"></script>
+  <script src="/js/def.js"></script>
 </head>
 <body>
 	<div id="wrapper">
@@ -44,7 +45,7 @@ if ($_GET) {
 				<?php if (!checkAdmin($_SESSION['login'])) {echo "Vous n'avez pas accèes à cette page."; exit();} ?>
 				<h2>Liste des visiteurs</h2>
 	            <br />
-	            <h5 class="invisible">Mise à jour effectué</h5>
+	            <h5 class="invisible"></h5>
 	            <p id="chargement" class='invisible'>
 	            	Chargement...
 	            </p>
