@@ -11,7 +11,7 @@ if (!$_SESSION['login']) {
 } elseif ($_GET) {
 	$get = $_GET;
 	$ficheFrais = array(
-		'idVisiteur' => $_SESSION['id'],
+		'idVisiteur' => '"'.$_SESSION['id'].'"',
 		'mois' => $get['mois'],
 		'annee' => $get['annee'],
 		'montantValide' => $get['montantValide']
@@ -109,6 +109,8 @@ if (!$_SESSION['login']) {
 			}
 		}
 	}
+	
+	header("location: /visiteur/listeFicheFrais.php");
 }
 
 // print_r($get);
