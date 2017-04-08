@@ -9,7 +9,7 @@ if ($_SESSION['login']) { //Si l'utilisateur est déjà connecté
 	$etat = "a réussi"; //Prévoir peut-être une autre variable ? 
 } else { //Sinon on tente de le connecter
 	$login = $_POST["login"];
-	$pwd = $_POST["password"];
+	$pwd = md5($_POST["password"]);
 	$request = "SELECT nom,prenom,login,id,pwd FROM Visiteur WHERE login='".$login."';";
 	$result = executeSQL($request);
 	// echo $request;
@@ -28,7 +28,7 @@ if ($_SESSION['login']) { //Si l'utilisateur est déjà connecté
     	}
 	} else { //Si quelque chose se passe mal ou que c'est l'administareur ou le comptable
 		foreach (lectureLoginXML() as $value) {
-			if ($login == $value->login and $pwd == $value->pwd) {
+			if ($login == $value->login and $pwd == md5($value->pwd)) {
 				$_SESSION['nom'] = (string)$value->nom;
     			$_SESSION['prenom'] = (string)$value->prenom;
     			$_SESSION['login'] = (string)$value->login;
