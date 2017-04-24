@@ -4,18 +4,20 @@
  *
  * Chargement des login et mot de passe du comptable et de l'admin
  * 
+ * @return array liste utilisateurs speciaux
+ * 
  */
  
-function lectureLoginXml() {
+function lectureLoginSpecial() {
   switch (explode('/',$_SERVER[PHP_SELF])[1]) {
     case 'admin':
     case 'comptable':
     case 'visiteur':
-      $su = simplexml_load_file("../php/special.xml");
+      $su = json_decode(file_get_contents('../php/special.json'), true)['user'];
       break;
   
-   default:
-    $su = simplexml_load_file("php/special.xml");
+  default:
+    $su = json_decode(file_get_contents('php/special.json'), true)['user'];
     break;
   }
   
@@ -31,7 +33,7 @@ function lectureLoginXml() {
  */
 
 function menu ($login) {
-  $su = lectureLoginXML();
+  $su = lectureLoginSpecial();
   
   $admin = array(
       "Liste des visiteurs" => "/admin/ListVisiteur.php", 
@@ -51,14 +53,14 @@ function menu ($login) {
   
    switch ($login) {
 
-     case (string)$su->admin->login:
+     case $su['admin']['login']:
        while (list($key, $item) = each($admin)) {
            echo "<li><a href='$item'>".$key."</a></li>"; 
         }
         break;
       
       
-     case (string)$su->comptable->login:
+     case $su['comptable']['login']:
         while (list($key, $item) = each($compta)) {
             echo "<li><a href='$item'>".$key."</a></li>"; 
         }
@@ -84,9 +86,9 @@ function menu ($login) {
  */
 
 function checkAdmin ($login) {
-  $su = lectureLoginXml();
+  $su = lectureLoginSpecial();
   
-  if ($login == (string)$su->admin->login) {
+  if ($login == $su['admin']['login']) {
 		return true;
 	} else {
 	  return false;
