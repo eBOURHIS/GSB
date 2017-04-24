@@ -34,7 +34,7 @@ foreach ($resS["LigneFraisForfait"] as $value) {
 $resS["LigneFraisForfait"] = $tmpArray;
 unset($tmpArray);
 
-print_r($resS);
+// print_r($resS);
 ?>
 
 <!DOCTYPE html>
@@ -121,4 +121,4 @@ print_r($resS);
 	</div>
 </div>
   </body>
-  </html>
+</html>
