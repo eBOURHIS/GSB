@@ -46,8 +46,7 @@ function menu ($login) {
    
   $visiteur = array(
       'Lister des fiches de frais' => "/visiteur/listeFicheFrais.php",
-      'Renseigner une fiche de frais' => "/visiteur/maFicheFrais.php",
-      'Suivre une fiche de frais' => "/visiteur/voirFicheFrais.php"
+      'Renseigner une fiche de frais' => "/visiteur/maFicheFrais.php"
   );
   
    switch ($login) {
