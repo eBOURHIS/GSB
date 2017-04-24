@@ -109,8 +109,9 @@ if (!$_SESSION['login']) {
 			}
 		}
 	}
-	
-	header("location: /visiteur/listeFicheFrais.php");
+	if (array_key_exists('update', $get) or array_key_exists('calculer', $get)) {
+		header('location: /visiteur/listeFicheFrais.php');
+	}
 }
 
 // print_r($get);
