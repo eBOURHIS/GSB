@@ -27,10 +27,10 @@ if ($_GET) {
 
 <!DOCTYPE html>
 <html>
-   <head>
-   <meta charset="UTF-8">
-   <link rel="stylesheet" href="/PPE2CSS.css" type="text/css" />
-  <title>Galaxy Swiss Bourdin</title>
+<head>
+	<meta charset="UTF-8">
+  	<link rel="stylesheet" href="/PPE2CSS.css" type="text/css" />
+  	<title>Galaxy Swiss Bourdin</title>
 </head>
 </body>
 
