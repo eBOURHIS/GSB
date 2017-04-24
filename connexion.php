@@ -27,11 +27,12 @@ if ($_SESSION['login']) { //Si l'utilisateur est déjà connecté
 			$err = "mot de passe incorrect";
     	}
 	} else { //Si quelque chose se passe mal ou que c'est l'administareur ou le comptable
-		foreach (lectureLoginXML() as $value) {
-			if ($login == $value->login and $pwd == md5($value->pwd)) {
-				$_SESSION['nom'] = (string)$value->nom;
-    			$_SESSION['prenom'] = (string)$value->prenom;
-    			$_SESSION['login'] = (string)$value->login;
+		$su = json_decode(file_get_contents('php/special.json'),true)['user'];
+		foreach ($su as $value) {
+			if ($login == $value['login'] and $pwd == md5($value['pwd'])) {
+				$_SESSION['nom'] = $value['nom'];
+    			$_SESSION['prenom'] = $value['prenom'];
+    			$_SESSION['login'] = $value['login'];
     			$etat = "a réussi";
 			}
 		}
