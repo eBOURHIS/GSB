@@ -1,7 +1,7 @@
 INSERT INTO `Forfait` (`id`, `libelle`, `montant`) VALUES
 ('ETP', 'Forfait Etape', 110.00),
 ('KM', 'Frais Kilométrique', 0.62),
-('NUI', 'Nuitée Hôtel', 80.00),
+('NUI', 'Nuitée Hôtel', 40.00),
 ('REP', 'Repas Restaurant', 25.00);
 
 INSERT INTO `Etat` (`id`, `libelle`) VALUES
