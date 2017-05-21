@@ -42,7 +42,7 @@ function menu ($login) {
   
   $compta = array(
       'Valider une fiche de frais' => "/comptable/ValidationFrais.php",
-      'Mettre en paiement une fiche de frais' => "/comptable/MettreEnPaiement.php",
+      // 'Mettre en paiement une fiche de frais' => "/comptable/MettreEnPaiement.php",
       'Modifier les forfaits' => "/comptable/FraisForfaits.php"
   );
    
@@ -191,6 +191,12 @@ function selectNombre($max, $name, $min = 0, $required = false) {
   }
   
   return $result."</select>";
+}
+
+function dateFR($dateStr) {
+  $dateList = explode("-",$dateStr);
+  
+  return $dateList[2]."/".$dateList[1]."/".$dateList[0];
 }
 
 ?>

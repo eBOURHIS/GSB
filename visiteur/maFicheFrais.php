@@ -139,15 +139,6 @@ if (!$_SESSION['login']) {
 			<div id="logo">
 				<h1><img src="/images/logoGSB.png" alt="GSB" /></h1>
 			</div>
-			<div id="social">
-				<ul class="contact">
-					<li><a href="#" class="icon icon-twitter"><span>Twitter</span></a></li>
-					<li><a href="#" class="icon icon-facebook"><span></span></a></li>
-					<li><a href="#" class="icon icon-dribbble"><span>Pinterest</span></a></li>
-					<li><a href="#" class="icon icon-tumblr"><span>Google+</span></a></li>
-					<li><a href="#" class="icon icon-rss"><span>Pinterest</span></a></li>
-				</ul>
-			</div>
 		</div>
 		
 		<div id="menu" class="container">
@@ -205,7 +196,8 @@ if (!$_SESSION['login']) {
 							<td><input type="number" name="montantValide" id="montantValide" value="<?= $res['ficheFrais'][0]['montantValide'] ?>" readonly /></td>
 						</tr>
 					</table>
-					<button id="calculer" class="buttoncenter" name="calculer">Envoyer</button>
+					<br />
+					<button class="buttoncenter" id="calculer" name="calculer">Envoyer</button>
 				</form>
 			</div>
 		</div>

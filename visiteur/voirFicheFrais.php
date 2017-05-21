@@ -52,15 +52,6 @@ unset($tmpArray);
 			<div id="logo">
 				<h1><img src="/images/logoGSB.png" alt="GSB" /></h1>
 			</div>
-			<div id="social">
-				<ul class="contact">
-					<li><a href="#" class="icon icon-twitter"><span>Twitter</span></a></li>
-					<li><a href="#" class="icon icon-facebook"><span></span></a></li>
-					<li><a href="#" class="icon icon-dribbble"><span>Pinterest</span></a></li>
-					<li><a href="#" class="icon icon-tumblr"><span>Google+</span></a></li>
-					<li><a href="#" class="icon icon-rss"><span>Pinterest</span></a></li>
-				</ul>
-			</div>
 		</div>
 		<div id="menu" class="container">
 			<ul>
@@ -107,7 +98,7 @@ unset($tmpArray);
 							<?php
 								if ($resS["FicheFrais"]["idEtat"] != "CR") {
 									echo "<th>Date opération</th>";
-									echo "<td>".$resS['FicheFrais']['dateModif']."</td>";
+									echo "<td>".dateFR($resS['FicheFrais']['dateModif'])."</td>";
 								} 
 							?>
 						</tr>

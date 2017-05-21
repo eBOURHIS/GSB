@@ -77,3 +77,55 @@ function writeLogin() {
         $('#login').val(prenom[0] + nom);
     }
 }
+
+/**
+ * 
+ * Permet de générer la fiche frais du visiteur sélectionner.
+ *  
+ */
+ 
+function tableFrais(callback) {
+    var date = $("#selectMois").val().split('-');
+
+    console.log(date);
+    
+    $('#TableauFiche').slideUp('slow');
+
+    $.ajax({
+        url: "/ajax/Frais.php",
+        type: "POST",
+        data: {
+            idVisiteur: $("#selectVisiteur").val(),
+            mois: date[0],
+            annee: date[1],
+        },
+        success: function(data) {
+            var tmp;
+
+            console.log(data);
+            $("th,td").remove();
+
+            for (var key in data[1]) {
+                $("#entete").append('<th>' + data[1][key]['libelle'] + "</th>");
+                $("#corps").append('<td>' + data[1][key]['quantite'] + "</td>");
+            }
+
+            for (var key in data[0]) {
+                if (key == 'id') {
+                    continue;
+                }
+                $("#entete").append('<th>' + key + "</th>");
+                $("#corps").append('<th>' + data[0][key] + "</th>");
+            }
+
+            $("#entete").append('<th>' + 'Situation' + "</th>");
+            $("#corps").append('<td>' + '<input type="radio" id="' + data[0]['id'] + '" name="RadioTableau" value="true" required="required" /> Valide' + '<input type="radio" name="RadioTableau" value="false" /> Non valide' + "</td>");
+            $('#TableauFiche').slideDown('slow');
+            callback();
+        }
+    });
+}
+
+function selectHint(element, msg) {
+    $(element).prepend("<option value='' disabled='disabled' selected='selected'>" + msg + "</option>");
+}

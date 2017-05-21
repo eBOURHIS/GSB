@@ -37,16 +37,27 @@ require '../php/def.php';
 		<div id="portfolio" class="container">
 			<div class="title">
 				<h2>Validation des frais par visiteurs</h2>
+<?php
+	if (array_key_exists("rembourser",$_GET)) {
+	$sql = "UPDATE FicheFrais SET idEtat='RB' WHERE idEtat='VA'";
+	$res = executeSQL($sql);
+	echo "<h4>Remboursement terminé</h4>";
+}
+?>
 					<br />
-				<form id="listVisiteurs" action="" method="get">
+				<form id="listVisiteurs" action="MettreEnPaiement.php" method="POST">
 				
-	   <fieldset> 
-			<p>Choisir le visiteur : <select id='selectVisiteur'> 
+				<p id="chargementUp" class='invisible'>
+	            	Chargement...
+	            </p>
+	            
+	   <fieldset id="FieldsetSelect"> 
+			<p><select id='selectVisiteur'> 
+			<option value="" disabled='disabled' selected='selected'>Sélectionner un visiteur</option>
 			</p>
 			<!-- Sur le menu select pour séléctionner les utilisateur utilise que la table "Visisteur" car sur FicheFrais il y a une clé étrangère de idVisiteur -->
 			
 			<?php 
-				echo '<option> Selectionner le visiteur</option>';
 	    		$req = "SELECT * FROM Visiteur";
 	    		$res = executeSQL($req);
 	    		if ($res == true) {
@@ -59,107 +70,32 @@ require '../php/def.php';
 	    	?>
 		    </select>
 		    
-<?php 
-	$month = array(
-     1 => 'Janvier',
-     2 => 'Février',
-     3 => 'Mars',
-     4 => 'Avril',
-     5 => 'Mai',
-     6 => 'Juin',
-     7 => 'Juillet',
-     8 => 'Août',
-     9=> 'Septembre',
-    10=> 'Octobre',
-    11 => 'Novembre',
-    12 => 'Décembre'
-);
+		    <select id="selectMois" class="invisible"></select>
 
-/**
- * Code du formulaire de sélection du mois
- * Bug : les mois ne sont pas classés dans l'ordre
- */
-$sForm = <<<CODE_HTML
-<form action="{$_SERVER['PHP_SELF']}" method="post" name="monform" id="monform">
-  <p>
-%s  </p>
-</form>
-CODE_HTML;
-/**
- * Code de la liste de sélection
- */
-$sSelect = <<<CODE_HTML
-    <select name="date" id="date" size="1" style="width:200px;" onchange="document.forms['monform'].submit();">
-%s    </select>
-CODE_HTML;
-/**
- * Code pour une option de sélection
- */
-$sOption = <<<CODE_HTML
-      <option value="%s">%s</option>
-CODE_HTML;
-$selectedDate = isset($_POST['date']) ? $_POST['date'] : null;
-// Recherche de la date du jour
-$current_month = date('m');
-$current_year  = date('Y');
-$listeChoix = SelectMois($current_month, $current_year, $month, $sSelect, $sOption, $selectedDate);
-$formulaire = sprintf($sForm, $listeChoix);
-echo($formulaire);
-
-?>
-	
-			
-	</p>
-<?php 	
-	$ficheFraisListe = tableSQL("SELECT mois,annee,montantValide,idEtat FROM FicheFrais WHERE idEtat='CR'");
-	
-	// print_r($ficheFraisListe);
-
-	echo '<table>';
-	for ($i = 0; $i < count($ficheFraisListe); $i++) {
-
-	echo '<tr>';
-			
-			foreach ($ficheFraisListe[$i] as $key => $value) { 
-
-				echo "<th>$key</th>";
-			}
-			echo '</tr>';
-			echo '<tr>';
-			foreach ($ficheFraisListe[$i] as $key => $value) {
-			
-
-				echo "<td>$value</td>";
-			}
-				echo '<td>	<input type= "radio" name="Valide" value="Valide" checked> Valide';
-				echo '		<input type= "radio" name="Non_Valide" value="Non_Valide" > Non Valide</td>';
-	echo '</tr>';
-
-				
-
-	}
-	echo '</table>';
-		
-	 
-?>
-		
-		<label for"NbJustificatifs">Nb Justificatifs</label>
-		<input id="NbJustificatifs" name="NbJustificatifs" /> <br />
+		<!--<label for"NbJustificatifs">Nb Justificatifs</label>-->
+		<!--<input id="NbJustificatifs" name="NbJustificatifs" /> <br />-->
 			<div align="center">
-			<input id="Calculer" class="buttoncenter" name="Calculer" type="submit" value="Soumettre la requête" />
 			</div>
         </fieldset>
+        
+        <table id="TableauFiche" class="invisible">
+        	<tr id='entete'></tr>
+        	<tr id='corps'></tr>
+        </table>
+        
+        <p id="chargementDown" class='invisible'>
+        	Chargement...
+        </p>
+       
+       <input class="buttoncenter" name="ValiderFicheFrais" id="ValiderFicheFrais" value="Soumettre" type="button" />
      </form>
 
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="/jquery-3.1.1.min.js"></script>
-<script type="text/javascript">
-	$('#date').change(function () {
-		$('#listVisiteurs').submit();
-	});
-</script>
+<script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="/js/def.js"></script>
+<script type="text/javascript" src="/js/Frais.js"></script>
 
 
   </body>

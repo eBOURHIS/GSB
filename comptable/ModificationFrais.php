@@ -74,7 +74,7 @@ if ($_GET) {
 						<input type='number' name='Montant' placeholder='Entrer le nouveau montant' />
 					</fieldset>
 					<input id="Effacer" class="buttoncenter" name="Effacer" type="reset" value="Effacer" />
-					<input id="Soumettre" class="buttoncenter" name="Confirmer" type="submit" value="Confirmer la modification" />
+					<input id="Soumettre" class="buttoncenter" name="Confirmer" type="submit" value="Confirmer" />
 				</form>
 				
 </body>

@@ -3,6 +3,10 @@
 session_start();
 
 require '../php/def.php';
+require '../php/connectAD.php';
+
+$sql = "UPDATE FicheFrais SET idEtat='VA', dateModif='".date('Y-m-d')."' WHERE id='".$_GET['id']."';";
+$res = executeSQL($sql);
 
 ?>
 
@@ -35,8 +39,11 @@ require '../php/def.php';
 	<div id="portfolio-wrapper">
 		<div id="portfolio" class="container">
 			<div class="title">
-				<h2>Validation des frais par visiteurs</h2>
-					<br />			<input id="Calculer" class="buttoncenter" name="Calculer" type="submit" value="Soumettre la requête" action="" />
+				<h2>REMBOURSEMENT</h2>
+			<br />	
+			<form id="formulaire" action="ValidationFrais.php">
+				<button id="Calculer" class="buttoncenter" name="rembourser">Soumettre</button>
+			</form>
 			</div>
 		</div>
 	</div>

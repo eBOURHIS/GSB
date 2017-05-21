@@ -98,15 +98,6 @@ if ($_POST['update']) {
 			<div id="logo">
 				<h1><img src="/images/logoGSB.png" alt="GSB" /></h1>
 			</div>
-			<div id="social">
-				<ul class="contact">
-					<li><a href="#" class="icon icon-twitter"><span>Twitter</span></a></li>
-					<li><a href="#" class="icon icon-facebook"><span></span></a></li>
-					<li><a href="#" class="icon icon-dribbble"><span>Pinterest</span></a></li>
-					<li><a href="#" class="icon icon-tumblr"><span>Google+</span></a></li>
-					<li><a href="#" class="icon icon-rss"><span>Pinterest</span></a></li>
-				</ul>
-			</div>
 		</div>
 		
 		<div id="menu" class="container">
@@ -178,8 +169,8 @@ if ($_POST['update']) {
 							}
 								}
 							echo "</table>";
-							echo "<input type='reset' />";
-							echo "<input type='button' name='insert' id='insert' value='Envoyer' />";
+							echo "<input class='buttoncenter' type='reset' />";
+							echo "<input class='buttoncenter' type='button' name='insert' id='insert' value='Envoyer' />";
 						?>
 			</div>
 		</div>

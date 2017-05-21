@@ -104,7 +104,7 @@ $(document).ready(function() {
                     if (data['res']) {
                         $('#etat').text("Mise-à-jour réussi !").fadeIn('slow').css('color','green');
                         if (data['pwd']) {
-                            $('#h3pwd').text("Mot de passe générer : " + data['pwd']).fadeIn('slow');
+                            $('#h3pwd').append("Mot de passe générer : <strong>" + data['pwd'] + '</strong>').fadeIn('slow');
                         }
                     } else {
                         $('#etat').text("Mise-à-jour échoué !").fadeIn().css('color','red');

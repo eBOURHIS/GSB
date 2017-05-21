@@ -4,9 +4,30 @@
 	require '../php/def.php';
 	require '../php/connectAD.php';
 
-	$sql="select * from LigneFraisForfait";
-	$cptforfait = compteSQL($sql);
-	$results = tableSQL($sql);
+if (array_key_exists("ID",$_GET)) {
+	$sql = 'INSERT INTO Forfait (id,libelle,montant) VALUES ("'.$_GET["ID"].'","'.$_GET["Libelle"].'",'.$_GET["Montant"].')';
+	$req = executeSQL($sql);
+	header("location: FraisForfaits.php");
+}
+
+if ($_GET) {
+	$get = $_GET;
+	$req = "DELETE FROM Forfait WHERE id='".$get['id']."';";
+	$res = executeSQL($req);
+	if ($res) {
+		// echo "Oui.";
+		$req = "DELETE FROM Forfait WHERE id='".$get['id']."';";
+		$res = executeSQL($req);
+		if ($res) {
+			$etat = "a réussi";
+		} else {
+			$etat = "a échoué";
+		}
+	} else {
+		$etat = "a échoué";
+	}
+}
+
 	
 ?>
 
@@ -47,18 +68,18 @@
 	    
 		<br />
 	
- 	<form style="text-align:center" id="formulaire" method="get" action="insertfrais.php">
-	      				
-	        			ID * : <input id="ID" name="ID" type="text" value="" />
-	        			Libelle * : <input id="Libelle"  name="Libelle" type="text" value="" />
-	        			Montant * : <input id="Montant" name="Montant" type="tewt" value="" />
-            
+ 	<form style="text-align:center" id="formulaire" method="get" action="">
+	      			<strong>
+	        			ID : <input id="ID" name="ID" type="text"  />
+	        			Libelle : <input Libelle="Libelle"  name="Libelle" type="text"  />
+	        			Montant (€) : <input Montant="Montant" name="Montant" type="number"  />
+           			 </strong>	
             <br /><br />
 
-	    	<tr>
+
 	    		<input class="buttoncenter" type="reset" value="Effacer" />
-	   			<input id="submit" class="buttoncenter" type="submit" name="submit" value=" Enregistrer le frais " /></td>
-	  		</tr>
+	   			<input id="submit" class="buttoncenter" type="submit" name="submit" value="Enregistrer le frais" /></td>
+	  	
 	    
 	    </table>
 	    
@@ -70,16 +91,23 @@
 	
 	// print_r($forfait);
 
-	echo '<table>';
-	for ($i = 0; $i < count($forfait); $i++) {
-
+	echo '<table>'; // En fait tu peux bien utiliser mon script ajax
 	echo '<tr>';
-			
-			foreach ($forfait[$i] as $key => $value) { 
+	
+		foreach ($forfait[0] as $key => $value) { 
 
 				echo "<th>$key</th>";
 			}
 			
+	echo'<th>Modifier</th>';
+	echo'<th>Supprimer</th>';
+	
+	echo '</tr>';
+	
+	for ($i = 0; $i < count($forfait); $i++) {
+
+	echo '<tr>';
+
 			echo '</tr>';
 			echo '<tr>';
 			
@@ -87,12 +115,12 @@
 			
 				echo "<td>$value</td>";
 			}
+			echo "<td>"."<a href='/comptable/ModificationFrais.php?id=".$forfait[$i]['id']."' title='Modifier'><img src='/icon/modifier.png' alt='Modifier' class='iconPlus' />"."</td>";
+			echo "<td>"."<a href='/comptable/FraisForfaits.php?id=".$forfait[$i]['id']."' title='Supprimer'><img src='/icon/supprimer.png' alt='Supprimer' class='iconPlus' />"."</td>";
 	echo '</tr>';
 
 	}
 	echo '</table>';
-		
-	 
 ?>
     </form>
 
