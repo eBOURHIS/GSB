@@ -2,8 +2,7 @@
  * 
  * @file Bibliothéque de fonction js
  * @author Loïc Penaud <lpenaud@zaclys.net>
- * @license Apache-2.0
- * @see Check {@link https://github.com/eBOURHIS/GSB GitHub}.
+ * @license {@link https://opensource.org/licenses/Apache-2.0 Apache-2.0}
  * 
  * @requires "jquery-3.1.1.min.js"
  * 
@@ -13,9 +12,9 @@
  * 
  * Envois une requête ajax de suppression de champs sql
  * 
- * @param {object} element DOM objet
+ * @param {object} element (DOMElement)
  * 
- * @param {string} msgConfirm Message de confirmation (confirm())
+ * @param {string} msgConfirm - Message de confirmation (confirm())
  * 
  */
 
@@ -81,6 +80,8 @@ function writeLogin() {
 /**
  * 
  * Permet de générer la fiche frais du visiteur sélectionner.
+ * 
+ * @param {requestCallback} callback - Le callback qui s'éxecute à la fin de la fonction pour bien afficher le tableau après la fonction
  *  
  */
  
@@ -100,8 +101,6 @@ function tableFrais(callback) {
             annee: date[1],
         },
         success: function(data) {
-            var tmp;
-
             console.log(data);
             $("th,td").remove();
 
@@ -125,6 +124,16 @@ function tableFrais(callback) {
         }
     });
 }
+
+/**
+ * 
+ * Cette fonction permet de créer un "hint" / "placeholder" (indice) sur un menu HTML select
+ * 
+ * @param {objet} element - (DOMElement) Menu HTML select dont on veux rajouter un "placeholder"
+ * 
+ * @param {string} msg - Message à mettre dans le "placeholder"
+ * 
+ */
 
 function selectHint(element, msg) {
     $(element).prepend("<option value='' disabled='disabled' selected='selected'>" + msg + "</option>");
