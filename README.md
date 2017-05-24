@@ -13,7 +13,7 @@ Adresse : https://gsb-ppe1-laladu29.c9users.io/index.php
 
 | Rôle            | Identifiant | Mot de passe |
 | -----------     | ----------- | -----------  |
-| Visiteur        | Mfloch      | exemple      |
+| Visiteur        | Mfloch      | d9Sk4Jv4B    |
 | Administrateur  | admin       | admin        |
 | Comptable       | Comptable   | Compta       |
 
