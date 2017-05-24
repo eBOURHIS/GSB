@@ -22,3 +22,4 @@ Adresse : https://gsb-ppe1-laladu29.c9users.io/docs/index.html
 
 # Licence 
 Apache 2
+Copyright 2017 Erwan Bourhis
