@@ -10,5 +10,5 @@ INSERT INTO `Etat` (`id`, `libelle`) VALUES
 ('CR', 'Fiche créée, saisie en cours'),
 ('VA', 'Validée et mise en paiement');
 
-INSERT INTO `Visiteur` (`id`,`nom`,`prenom`,`adresse`,`cp`,`ville`,`dateEmbauche`,`login`,`pwd`) VALUES
-('FM','FLOCH',"Marie","32 rue de Siam","29200","BREST","2002-01-05","Mfloch","exemple");
+--- INSERT INTO `Visiteur` (`id`,`nom`,`prenom`,`adresse`,`cp`,`ville`,`dateEmbauche`,`login`,`pwd`) VALUES
+--- ('FM','FLOCH',"Marie","32 rue de Siam","29200","BREST","2002-01-05","Mfloch","exemple");
