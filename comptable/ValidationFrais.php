@@ -55,7 +55,7 @@ require '../php/def.php';
 			<p><select id='selectVisiteur'> 
 			<option value="" disabled='disabled' selected='selected'>Sélectionner un visiteur</option>
 			</p>
-			<!-- Sur le menu select pour séléctionner les utilisateur utilise que la table "Visisteur" car sur FicheFrais il y a une clé étrangère de idVisiteur -->
+			<!-- Sur le menu select pour séléctionner les utilisateurs utiliser que la table "Visisteur" car sur FicheFrais il y a une clé étrangère de idVisiteur -->
 			
 			<?php 
 	    		$req = "SELECT * FROM Visiteur";

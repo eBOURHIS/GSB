@@ -55,6 +55,6 @@ $('#ValiderFicheFrais').click(function() {
         }
     }
     else {
-        alert('Veuillez sélectionner une option.');
+        alert('Veuillez sélectionner "Valide" ou "Non Valide".');
     }
 });
