@@ -12,6 +12,7 @@ maFicheFrais.php:22
 # Voir le site
 Lauch in terminal : `sudo service apache2 start`
 https://gsb-ppe1-laladu29.c9users.io
+https://gsb-ppe1-laladu29.c9users.io/docs
 
 # Information schéma
 ```sql

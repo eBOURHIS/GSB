@@ -14,6 +14,7 @@ Adresse : https://gsb-ppe1-laladu29.c9users.io/index.php
 | Rôle            | Identifiant | Mot de passe |
 | -----------     | ----------- | -----------  |
 | Visiteur        | Mfloch      | d9Sk4Jv4B    |
+| Visiteur        | Mpagnol     | s9Qv0Ca8T    |
 | Administrateur  | admin       | admin        |
 | Comptable       | Comptable   | Compta       |
 
