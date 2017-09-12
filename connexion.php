@@ -5,7 +5,7 @@ session_start();
 require 'php/def.php';
 require 'php/connectAD.php';
 
-if ($_SESSION['login']) { //Si l'utilisateur est déjà connecté
+if (array_key_exists('login', $_SESSION) && $_SESSION['login']) { //Si l'utilisateur est déjà connecté
 	$etat = "a réussi"; //Prévoir peut-être une autre variable ? 
 } else { //Sinon on tente de le connecter
 	$login = $_POST["login"];

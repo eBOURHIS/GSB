@@ -19,7 +19,10 @@
  */
  
 function lectureLoginSpecial() {
-  switch (explode('/',$_SERVER[PHP_SELF])[1]) {
+  print_r(explode('/',$_SERVER['PHP_SELF']));
+  // Sur windows : Array ( [0] => [1] => GSB - PPE [2] => admin [3] => ListVisiteur.php )
+  // TODO: Rajouter une boucle pour faire correspondre sur le bon rôle
+  switch (explode('/',$_SERVER['PHP_SELF'])[1]) {
     case 'admin':
     case 'comptable':
     case 'visiteur':
@@ -46,8 +49,8 @@ function menu ($login) {
   $su = lectureLoginSpecial();
   
   $admin = array(
-      "Liste des visiteurs" => "/admin/ListVisiteur.php", 
-      'Gestion visiteur' => "/admin/GestionVisiteur.php",
+      "Liste des visiteurs" => "admin/ListVisiteur.php", 
+      'Gestion visiteur' => "admin/GestionVisiteur.php",
   );
   
   $compta = array(

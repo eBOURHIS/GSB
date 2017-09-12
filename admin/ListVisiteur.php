@@ -32,7 +32,7 @@ if ($_GET) {
 		</div>
 		<div id="menu" class="container">
 			<ul>
-				<li><a href="/deconnexion.php" accesskey="1" title="">Déconnexion</a></li>
+				<li><a href="deconnexion.php" accesskey="1" title="">Déconnexion</a></li>
 				<?php menu($_SESSION['login']); ?>
 			</ul>
 		</div>

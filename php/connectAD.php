@@ -33,15 +33,6 @@
 			$dbname = "u291192831_si6";
 			$port='3306';
 			break;
-			
-	    case 10 :
-			//SQL GSB
-			$host = "10.0.242.7";
-			$user = "Maxime";
-			$password = "Iroise29";
-			$dbname = "gsb";
-			$port='3306';
-			break;
 	    
 		default :
 			exit ("Serveur non reconnu...");

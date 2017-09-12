@@ -5,7 +5,7 @@ session_start();
 require 'php/def.php';
 require 'php/connectAD.php';
 
-if ($_SESSION['login']) { //Dans le cas où l'utilisateur est déjà connecter
+if (array_key_exists('login', $_SESSION)) { //Dans le cas où l'utilisateur est déjà connecter
 	header('location: connexion.php'); //redirection vers la page 'connexion.php'
 	exit();
 }
@@ -17,7 +17,7 @@ if ($_SESSION['login']) { //Dans le cas où l'utilisateur est déjà connecter
    <head>
    <meta charset="UTF-8">
     <!--<link rel="icon" href="/images/logo2.jpg" type="image/jpg" sizes="16x16"> -->
-   <link rel="stylesheet" href="/PPE2CSS.css" type="text/css" />
+   <link rel="stylesheet" href="PPE2CSS.css" type="text/css" />
   <title>Galaxy Swiss Bourdin</title>
 </head>
 </body>
@@ -26,7 +26,7 @@ if ($_SESSION['login']) { //Dans le cas où l'utilisateur est déjà connecter
 	<div id="header-wrapper">
 		<div id="header" class="container">
 			<div id="logo">
-				<h1><img src="/images/logoGSB.png" alt="GSB" /></h1>
+				<h1><img src="images/logoGSB.png" alt="GSB" /></h1>
 			</div>
 		</div>
 	
