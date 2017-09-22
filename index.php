@@ -38,7 +38,7 @@ if (array_key_exists('login', $_SESSION)) { //Dans le cas où l'utilisateur est 
 			<div class="title">
 				<h2>Connexion</h2>
 	<br />
-				<form id="formulaire" action="connexion.php" method="post">
+				<form id="formulaire" action="<?=resolveLink('connexion.php') ?>" method="post">
 					<fieldset class='fieldFlex'>
 						<label for='login'>Identifiant</label>
 						<input type='text' name='login' />

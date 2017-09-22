@@ -19,10 +19,14 @@
  */
  
 function lectureLoginSpecial() {
-  print_r(explode('/',$_SERVER['PHP_SELF']));
+  // print_r(explode('/',$_SERVER['PHP_SELF']));
   // Sur windows : Array ( [0] => [1] => GSB - PPE [2] => admin [3] => ListVisiteur.php )
   // TODO: Rajouter une boucle pour faire correspondre sur le bon rôle
-  switch (explode('/',$_SERVER['PHP_SELF'])[1]) {
+
+  $phpSelf = explode('/',$_SERVER['PHP_SELF']);
+  $directory = $phpSelf[count($phpSelf) - 2];
+
+  switch ($directory) {
     case 'admin':
     case 'comptable':
     case 'visiteur':
@@ -54,23 +58,23 @@ function resolveLink($page) {
  * 
  */
 
-function menu ($login) {
+function menu($login) {
   $su = lectureLoginSpecial();
   
   $admin = array(
-      "Liste des visiteurs" => "admin/ListVisiteur.php", 
-      'Gestion visiteur' => "admin/GestionVisiteur.php",
+      "Liste des visiteurs" => resolveLink("admin/ListVisiteur.php"), 
+      'Gestion visiteur' => resolveLink("admin/GestionVisiteur.php"),
   );
   
   $compta = array(
-      'Valider une fiche de frais' => "/comptable/ValidationFrais.php",
+      'Valider une fiche de frais' => resolveLink("comptable/ValidationFrais.php"),
       // 'Mettre en paiement une fiche de frais' => "/comptable/MettreEnPaiement.php",
-      'Modifier les forfaits' => "/comptable/FraisForfaits.php"
+      'Modifier les forfaits' => resolveLink("comptable/FraisForfaits.php")
   );
    
   $visiteur = array(
-      'Lister des fiches de frais' => "/visiteur/listeFicheFrais.php",
-      'Renseigner une fiche de frais' => "/visiteur/maFicheFrais.php"
+      'Lister des fiches de frais' => resolveLink("visiteur/listeFicheFrais.php"),
+      'Renseigner une fiche de frais' => resolveLink("visiteur/maFicheFrais.php")
   );
   
    switch ($login) {

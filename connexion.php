@@ -63,7 +63,7 @@ if (array_key_exists('login', $_SESSION) && $_SESSION['login']) { //Si l'utilisa
 		</div>
 		<div id="menu" class="container">
 			<ul>
-				<li><a href="deconnexion.php" accesskey="1" title="">Déconnexion</a></li>
+				<li><a href="<?=resolveLink('deconnexion.php') ?>" accesskey="1" title="">Déconnexion</a></li>
 				<?php menu($_SESSION['login']); ?>
 			</ul>
 		</div>

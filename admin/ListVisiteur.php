@@ -6,7 +6,9 @@ require '../php/def.php';
 require '../php/connectAD.php';
 
 if ($_GET) {
+	$req = executeSQL("SET foreign_key_checks = 0;");
 	$result = executeSQL('DELETE FROM Visiteur WHERE id="'.$_GET['id'].'";');
+	$result = executeSQL("SET foreign_key_checks = 1;");
 	header("location: ListVisiteur.php");
 }
 
@@ -16,23 +18,23 @@ if ($_GET) {
 <html>
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="/PPE2CSS.css" type="text/css" />
+  <link rel="stylesheet" href="<?=resolveLink('PPE2CSS.css') ?>" type="text/css" />
   <title>Galaxy Swiss Bourdin</title>
-  <script src="/js/jquery-3.1.1.min.js"></script>
-  <script src="/js/deleteSQL.js"></script>
-  <script src="/js/def.js"></script>
+  <script src="<?=resolveLink('js/jquery-3.1.1.min.js') ?>"></script>
+  <script src="<?=resolveLink('js/deleteSQL.js') ?>"></script>
+  <script src="<?=resolveLink('js/def.js') ?>"></script>
 </head>
 <body>
 	<div id="wrapper">
 	<div id="header-wrapper">
 		<div id="header" class="container">
 			<div id="logo">
-				<h1><img src="/images/logoGSB.png" alt="GSB" /></h1>
+				<h1><img src="<?=resolveLink('images/logoGSB.png') ?>" alt="GSB" /></h1>
 			</div>
 		</div>
 		<div id="menu" class="container">
 			<ul>
-				<li><a href="deconnexion.php" accesskey="1" title="">Déconnexion</a></li>
+				<li><a href="<?=resolveLink('deconnexion.php') ?>" accesskey="1" title="">Déconnexion</a></li>
 				<?php menu($_SESSION['login']); ?>
 			</ul>
 		</div>
@@ -71,9 +73,16 @@ if ($_GET) {
 	            					if ($key != "id") {
 	            						echo "<td>".$row."</td>";
 	            					}
-	            				}
-	            				echo "<td><a href=/admin/GestionVisiteur.php?id=".$result[$i]['id']." title='modifier'><img src='/icon/modifier.png' alt='modifier' class='iconPlus' /></a></td>";
-	            				echo "<td><img src='/icon/supprimer.png' alt='supprimer' class='iconPlus' title='supprimer' id='suppr".$result[$i]['id']."' /></td>";
+								}
+								echo '<td>';
+								echo '<a href="'.resolveLink('admin/GestionVisiteur.php').'?idVisiteur='.$result[$i]['id'].'">';
+								echo '<img src="'.resolveLink('icon/modifier.png').'" alt="Modifier" class="iconPlus" ></a>';
+								echo '</td>';
+								echo '<td>';
+								echo '<a href="'.resolveLink('admin/ListVisiteur.php').'?id='.$result[$i]['id'].'" title="Supprimer">'; 
+								echo '<img src="'.resolveLink('icon/supprimer.png').'" alt="Supprimer" class="iconPlus" >';
+								echo '</a>';
+								echo '</td>';
 	            				echo "</tr>";
 	            			}
 	            		?>
