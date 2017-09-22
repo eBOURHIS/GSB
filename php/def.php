@@ -37,6 +37,15 @@ function lectureLoginSpecial() {
   return $su;
 }
 
+function resolveLink($page) {
+  $future = $_SERVER['CONTEXT_PREFIX'] ? $_SERVER['CONTEXT_PREFIX'] : "";
+  $future .= '/';
+  // return $_SERVER;
+
+  $future .= $page;
+  return $future;
+}
+
 /**
  *
  * Génére le menu de navigation pour toute les sessions
