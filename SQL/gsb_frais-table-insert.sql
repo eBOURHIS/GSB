@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.5.53, for debian-linux-gnu (x86_64)
 --
--- Host: 0.0.0.0    Database: gsb_frais2
+-- Host: 0.0.0.0    Database: gsb_frais
 -- ------------------------------------------------------
 -- Server version	5.5.53-0ubuntu0.14.04.1
 
@@ -127,34 +127,6 @@ INSERT INTO `LigneFraisForfait` VALUES (6,'ETP',8),(7,'ETP',3),(11,'ETP',4),(6,'
 UNLOCK TABLES;
 
 --
--- Table structure for table `LigneFraisHorsForfait`
---
-
-DROP TABLE IF EXISTS `LigneFraisHorsForfait`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `LigneFraisHorsForfait` (
-  `idFraisHF` int(11) NOT NULL AUTO_INCREMENT,
-  `idFicheFrais` int(11) NOT NULL,
-  `dteFraisHF` date DEFAULT NULL,
-  `libFraisHF` varchar(60) DEFAULT NULL,
-  `quantite` smallint(5) unsigned DEFAULT NULL,
-  PRIMARY KEY (`idFraisHF`),
-  KEY `idFicheFrais` (`idFicheFrais`),
-  CONSTRAINT `LigneFraisHorsForfait_ibfk_1` FOREIGN KEY (`idFicheFrais`) REFERENCES `FicheFrais` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `LigneFraisHorsForfait`
---
-
-LOCK TABLES `LigneFraisHorsForfait` WRITE;
-/*!40000 ALTER TABLE `LigneFraisHorsForfait` DISABLE KEYS */;
-/*!40000 ALTER TABLE `LigneFraisHorsForfait` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `Visiteur`
 --
 
@@ -194,4 +166,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-22 15:59:49
+-- Dump completed on 2017-09-29  7:03:10
